@@ -3,16 +3,28 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import type { DestinationMedia, MediaCategory } from "@/types";
+import type { MediaCategory } from "@/types";
 import PlacePicker, { type PlaceResult } from "@/components/PlacePicker";
 import clsx from "clsx";
 
-interface MediaWithCats extends DestinationMedia {
+interface MediaWithCats {
+  id: string;
+  sub_location_id: string;
+  destination_id: string;
+  media_type: "image" | "video";
+  storage_path: string;
+  public_url: string;
+  filename: string;
+  caption: string | null;
+  description: string | null;
+  tags: string[];
+  size_bytes: number | null;
+  uploaded_by: string | null;
+  created_at: string;
   shot_lat?: number | null;
   shot_lng?: number | null;
   shot_place_id?: string | null;
   shot_place_name?: string | null;
-  description?: string | null;
   category_links?: { category_id: string }[];
 }
 

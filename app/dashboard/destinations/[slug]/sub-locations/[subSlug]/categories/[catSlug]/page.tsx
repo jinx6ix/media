@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import CategoryMediaGrid from "@/components/destinations/CategoryMediaGrid";
+import type { MediaCategory } from "@/types";
 
 interface Props { params: Promise<{ slug: string; subSlug: string; catSlug: string }> }
 
@@ -20,7 +21,6 @@ export default async function CategoryPage({ params }: Props) {
 
   const { data: allCategories } = await supabase.from("media_categories").select("*").eq("sub_location_id", sl.id).order("name");
 
-  // Fetch media in this category via junction table
   const { data: links } = await supabase
     .from("media_category_links")
     .select("media_id")
@@ -28,7 +28,8 @@ export default async function CategoryPage({ params }: Props) {
 
   const mediaIds = links?.map(l => l.media_id) ?? [];
 
-  let mediaItems: Record<string, unknown>[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let mediaItems: any[] = [];
   if (mediaIds.length > 0) {
     const { data: rawMedia } = await supabase
       .from("destination_media")
@@ -37,7 +38,6 @@ export default async function CategoryPage({ params }: Props) {
       .order("created_at", { ascending: false });
 
     if (rawMedia) {
-      // Attach category links to each item
       const { data: allLinks } = await supabase
         .from("media_category_links")
         .select("media_id, category_id")
@@ -77,8 +77,8 @@ export default async function CategoryPage({ params }: Props) {
 
       <div className="p-6">
         <CategoryMediaGrid
-          mediaItems={mediaItems as Parameters<typeof CategoryMediaGrid>[0]["mediaItems"]}
-          allCategories={allCategories ?? []}
+          mediaItems={mediaItems as unknown as Parameters<typeof CategoryMediaGrid>[0]["mediaItems"]}
+          allCategories={(allCategories as unknown as MediaCategory[]) ?? []}
           defaultCategoryId={cat.id}
           subLocationId={sl.id}
           destinationId={dest.id}
