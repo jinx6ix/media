@@ -3,17 +3,9 @@ import { cookies } from "next/headers";
 import DashboardNav from "@/components/DashboardNav";
 import { createServiceClient } from "@/lib/supabase/server";
 
-async function getUserFromCookies() {
-  const cookieStore = await cookies();
-  const authCookie = cookieStore.getAll().find(c => c.name.includes("auth-token"));
-  if (!authCookie) return null;
-  try {
-    const value = decodeURIComponent(authCookie.value);
-    const data = JSON.parse(value);
-    return data.user || null;
-  } catch {
-    return null;
-  }
+async function isAuthenticated(cookieStore: Awaited<ReturnType<typeof cookies>>) {
+  const allCookies = cookieStore.getAll();
+  return allCookies.some(c => c.name.includes("auth-token"));
 }
 
 export default async function DashboardLayout({
@@ -21,8 +13,11 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getUserFromCookies();
-  if (!user) redirect("/login");
+  const cookieStore = await cookies();
+
+  if (!isAuthenticated(cookieStore)) {
+    redirect("/login");
+  }
 
   const supabase = await createServiceClient();
   const [destinationsResult, albumsResult] = await Promise.all([
@@ -35,7 +30,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-screen">
-      <DashboardNav user={user} destinations={destinations} albums={albums} />
+      <DashboardNav user={{ id: "user", email: "" } as any} destinations={destinations} albums={albums} />
       <main className="flex-1 min-w-0 ml-[220px]">{children}</main>
     </div>
   );

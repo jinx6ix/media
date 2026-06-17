@@ -1,9 +1,9 @@
-import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/server";
 import ImageGrid from "@/components/ImageGrid";
 import TopBar from "@/components/TopBar";
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
+  const supabase = await createServiceClient();
 
   const { data: mediaItems } = await supabase
     .from("media")

@@ -1,14 +1,13 @@
-import { createBrowserClient } from "@supabase/ssr";
+import { createClient as makeClient } from "@supabase/supabase-js";
 
-let client: ReturnType<typeof createBrowserClient> | null = null;
+let browserClient: ReturnType<typeof makeClient> | null = null;
 
 export function createClient() {
-  // Reuse the same instance to avoid duplicate GoTrue clients
-  if (!client) {
-    client = createBrowserClient(
+  if (!browserClient) {
+    browserClient = makeClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
   }
-  return client;
+  return browserClient;
 }

@@ -27,8 +27,7 @@ export default function LoginPage() {
       return;
     }
 
-    // Hard navigation — forces a full server round-trip so middleware
-    // reads the freshly-written session cookie and allows /dashboard
+    // Full page reload to ensure cookie is set server-side
     window.location.href = "/dashboard";
   }
 
