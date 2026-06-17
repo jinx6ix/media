@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/server";
 import ImageGrid from "@/components/ImageGrid";
 import AlbumTopBar from "@/components/AlbumTopBar";
 
@@ -9,17 +9,13 @@ interface Props {
 
 export default async function AlbumPage({ params }: Props) {
   const { slug } = await params;
-  const supabase = await createClient();
-
-  console.log("[AlbumPage] Looking for slug:", slug);
+  const supabase = await createServiceClient();
 
   const { data: album, error } = await supabase
     .from("albums")
     .select("*")
     .eq("slug", slug)
     .single();
-
-  console.log("[AlbumPage] Result:", { album, error });
 
   if (!album || error) notFound();
 
