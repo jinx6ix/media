@@ -1,15 +1,13 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient as makeClient, type SupabaseClient } from "@supabase/supabase-js";
 
-export async function createServiceClient() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+export async function createServiceClient(): Promise<SupabaseClient> {
+  return makeClient(supabaseUrl, supabaseServiceKey);
 }
 
-export async function createSupabaseClient() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+export async function createClient(): Promise<SupabaseClient> {
+  return makeClient(supabaseUrl, supabaseAnonKey);
 }
