@@ -16,12 +16,9 @@ interface Props {
   placeholder?: string;
 }
 
-declare global {
-  interface Window {
-    google: typeof google;
-    initGoogleMaps?: () => void;
-  }
-}
+/* eslint-disable @typescript-eslint/no-explicit-any */
+declare const google: any;
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 let mapsLoaded = false;
 let mapsLoading = false;
@@ -33,7 +30,7 @@ function loadGoogleMaps(apiKey: string): Promise<void> {
     mapsCallbacks.push(resolve);
     if (mapsLoading) return;
     mapsLoading = true;
-    window.initGoogleMaps = () => {
+    (window as any).initGoogleMaps = () => {
       mapsLoaded = true;
       mapsCallbacks.forEach(cb => cb());
       mapsCallbacks.length = 0;
