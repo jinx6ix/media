@@ -39,22 +39,21 @@ export default function EditSubLocationPage() {
   useEffect(() => {
     if (!slug || !subSlug) return;
     const supabase = createClient();
-    supabase.from("destinations").select("id").eq("slug", slug).single()
-      .then(({ data: dest }) => {
-        if (!dest) return;
-        return supabase.from("sub_locations").select("*").eq("destination_id", dest.id).eq("slug", subSlug).single();
-      })
-      .then(({ data: s }) => {
-        if (!s) return;
-        setSl(s); setName(s.name); setDesc(s.description ?? "");
-        return Promise.all([
-          supabase.from("accommodations").select("*").eq("sub_location_id", s.id).order("name"),
-          supabase.from("media_categories").select("*").eq("sub_location_id", s.id).order("name"),
-        ]);
-      })
-      .then(([{ data: acc }, { data: cats }]) => {
-        setAccommodations(acc ?? []); setCategories(cats ?? []);
-      });
+
+    async function load() {
+      const { data: dest } = await supabase.from("destinations").select("id").eq("slug", slug).single();
+      if (!dest) return;
+      const { data: s } = await supabase.from("sub_locations").select("*").eq("destination_id", dest.id).eq("slug", subSlug).single();
+      if (!s) return;
+      setSl(s); setName(s.name); setDesc(s.description ?? "");
+      const [{ data: acc }, { data: cats }] = await Promise.all([
+        supabase.from("accommodations").select("*").eq("sub_location_id", s.id).order("name"),
+        supabase.from("media_categories").select("*").eq("sub_location_id", s.id).order("name"),
+      ]);
+      setAccommodations(acc ?? []); setCategories(cats ?? []);
+    }
+
+    load();
   }, [slug, subSlug]);
 
   async function saveDetails(e: React.FormEvent) {
