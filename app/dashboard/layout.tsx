@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/server";
 import DashboardNav from "@/components/DashboardNav";
 
 async function getUserFromCookies() {
@@ -29,7 +29,7 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
-  const supabase = await createClient();
+  const supabase = await createServiceClient();
 
   const { data: albums } = await supabase
     .from("albums")
