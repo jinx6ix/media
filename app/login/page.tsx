@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,7 +15,8 @@ export default function LoginPage() {
     setLoading(true);
 
     const supabase = createClient();
-    const { data, error: authError } = await supabase.auth.signInWithPassword({
+
+    const { error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -28,8 +27,9 @@ export default function LoginPage() {
       return;
     }
 
-    console.log("Login success, session:", data.session ? "exists" : "null");
-    router.push("/dashboard");
+    // Hard navigation — forces a full server round-trip so middleware
+    // reads the freshly-written session cookie and allows /dashboard
+    window.location.href = "/dashboard";
   }
 
   return (
