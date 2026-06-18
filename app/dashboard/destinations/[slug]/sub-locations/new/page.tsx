@@ -50,7 +50,7 @@ export default function NewSubLocationPage() {
       return;
     }
 
-    router.push(`/dashboard/destinations/${slug}/sub-locations`);
+    router.push(`/dashboard/destinations/${slug}`);
     router.refresh();
   }
 

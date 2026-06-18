@@ -32,6 +32,7 @@ export default function NewAlbumPage() {
         name: name.trim(),
         slug,
         description: desc.trim() || null,
+        is_public: true,
         created_by: user?.id,
       })
       .select()

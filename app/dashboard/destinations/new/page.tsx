@@ -29,7 +29,7 @@ export default function NewDestinationPage() {
 
     const { data, error: dbErr } = await supabase
       .from("destinations")
-      .insert({ name: name.trim(), slug, country: country.trim(), description: description.trim() || null, created_by: user?.id })
+      .insert({ name: name.trim(), slug, country: country.trim(), description: description.trim() || null, is_public: true, created_by: user?.id })
       .select().single();
 
     if (dbErr) { setError(dbErr.message); setLoading(false); return; }
