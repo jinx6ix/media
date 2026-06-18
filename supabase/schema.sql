@@ -47,6 +47,9 @@ create table if not exists media (
   height        integer,
   duration_sec  integer,
   size_bytes    bigint,
+  shot_lat      double precision,
+  shot_lng      double precision,
+  shot_place_name text,
   uploaded_by   uuid references auth.users(id) on delete set null,
   created_at    timestamptz not null default now()
 );

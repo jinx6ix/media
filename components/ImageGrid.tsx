@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { Media } from "@/types";
 import UploadModal from "./UploadModal";
+import StaticMap from "./StaticMap";
 
 interface MediaWithAlbum extends Media {
   albums?: { name: string; slug: string } | null;
@@ -285,6 +286,15 @@ export default function ImageGrid({
                   </div>
                 )}
               </div>
+
+              {(lightbox.shot_lat && lightbox.shot_lng) && (
+                <div className="w-64 flex-shrink-0">
+                  <StaticMap lat={lightbox.shot_lat} lng={lightbox.shot_lng} zoom={12} width={300} height={160} />
+                  {lightbox.shot_place_name && (
+                    <p className="text-[10px] text-[#5a4a2a] mt-1 leading-tight">{lightbox.shot_place_name}</p>
+                  )}
+                </div>
+              )}
 
               <div className="flex gap-2 flex-shrink-0">
                 <a href={lightbox.public_url} target="_blank" rel="noopener noreferrer"

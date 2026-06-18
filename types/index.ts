@@ -27,6 +27,9 @@ export interface Media {
   height: number | null;
   duration_sec: number | null;
   size_bytes: number | null;
+  shot_lat: number | null;
+  shot_lng: number | null;
+  shot_place_name: string | null;
   uploaded_by: string | null;
   created_at: string;
 }
