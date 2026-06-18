@@ -6,7 +6,6 @@ export interface Album {
   slug: string;
   description: string | null;
   cover_url: string | null;
-  is_public: boolean;
   share_token: string;
   created_by: string | null;
   created_at: string;
@@ -80,7 +79,6 @@ export interface Destination {
   country: string;
   description: string | null;
   cover_url: string | null;
-  is_public: boolean;
   share_token: string;
   created_by: string | null;
   created_at: string;

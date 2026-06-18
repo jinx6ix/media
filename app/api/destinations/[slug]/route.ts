@@ -7,7 +7,7 @@ export async function GET(_req: NextRequest, { params }: Props) {
   const { slug } = await params;
   const supabase = await createServiceClient();
 
-  const { data: dest } = await supabase.from("destinations").select("*").eq("slug", slug).eq("is_public", true).single();
+  const { data: dest } = await supabase.from("destinations").select("*").eq("slug", slug).single();
   if (!dest) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   const { data: subLocs } = await supabase

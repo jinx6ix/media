@@ -20,7 +20,7 @@ export default async function PublicDestinationPage({ params }: Props) {
   const { token } = await params;
   const supabase = await createServiceClient();
 
-  const { data: dest } = await supabase.from("destinations").select("*").eq("share_token", token).eq("is_public", true).single();
+  const { data: dest } = await supabase.from("destinations").select("*").eq("share_token", token).single();
   if (!dest) notFound();
 
   const { data: subLocs } = await supabase

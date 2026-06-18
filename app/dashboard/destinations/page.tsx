@@ -68,11 +68,6 @@ export default async function DestinationsPage() {
                       <h2 className="text-sm font-medium text-[#d4b870] group-hover:text-[#e8ca80] transition-colors">
                         {d.name}
                       </h2>
-                      {d.is_public && (
-                        <span className="text-[9px] bg-[#c9a84c20] text-[#c9a84c] border border-[#c9a84c40] rounded px-1.5 py-0.5">
-                          PUBLIC
-                        </span>
-                      )}
                     </div>
                     <p className="text-xs text-[#5a4a2a] mt-0.5">{d.country}</p>
                     {d.description && (

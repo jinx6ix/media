@@ -22,7 +22,7 @@ export default async function DashboardLayout({
   const supabase = await createServiceClient();
   const [destinationsResult, albumsResult] = await Promise.all([
     supabase.from("destinations").select("id, name, slug").order("name"),
-    supabase.from("albums").select("id, name, slug, is_public").order("created_at", { ascending: false }),
+    supabase.from("albums").select("id, name, slug").order("created_at", { ascending: false }),
   ]);
 
   const destinations = destinationsResult.data || [];

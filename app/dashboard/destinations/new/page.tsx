@@ -5,10 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 function slugify(str: string) {
-  return str.toLowerCase().trim()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
+  return str.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
 }
 
 export default function NewDestinationPage() {
@@ -16,7 +13,6 @@ export default function NewDestinationPage() {
   const [name, setName] = useState("");
   const [country, setCountry] = useState("Kenya");
   const [description, setDescription] = useState("");
-  const [isPublic, setIsPublic] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -33,7 +29,7 @@ export default function NewDestinationPage() {
 
     const { data, error: dbErr } = await supabase
       .from("destinations")
-      .insert({ name: name.trim(), slug, country: country.trim(), description: description.trim() || null, is_public: isPublic, created_by: user?.id })
+      .insert({ name: name.trim(), slug, country: country.trim(), description: description.trim() || null, created_by: user?.id })
       .select().single();
 
     if (dbErr) { setError(dbErr.message); setLoading(false); return; }
@@ -61,17 +57,6 @@ export default function NewDestinationPage() {
         <Field label="Description">
           <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Brief overview of this destination…" rows={4} className={`${input} resize-none`} />
         </Field>
-
-        <div className="flex items-center gap-3 p-4 bg-[#161616] border border-[#2a2010] rounded-lg">
-          <button type="button" onClick={() => setIsPublic(!isPublic)}
-            className={`relative w-10 h-5 rounded-full transition-colors flex-shrink-0 ${isPublic ? "bg-[#c9a84c]" : "bg-[#2a2010]"}`}>
-            <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${isPublic ? "translate-x-5" : "translate-x-0.5"}`} />
-          </button>
-          <div>
-            <p className="text-sm text-[#a09070] font-medium">{isPublic ? "Public destination" : "Private destination"}</p>
-            <p className="text-xs text-[#5a4a2a] mt-0.5">{isPublic ? "Visible via share link — no login needed" : "Team only"}</p>
-          </div>
-        </div>
 
         {error && <p className="text-sm text-red-400 bg-red-950/30 border border-red-900/40 rounded-lg px-3 py-2">{error}</p>}
 

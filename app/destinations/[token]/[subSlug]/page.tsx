@@ -12,7 +12,7 @@ export default async function PublicSubLocationPage({ params, searchParams }: Pr
   const { cat: catSlug } = await searchParams;
   const supabase = await createServiceClient();
 
-  const { data: dest } = await supabase.from("destinations").select("*").eq("share_token", token).eq("is_public", true).single();
+  const { data: dest } = await supabase.from("destinations").select("*").eq("share_token", token).single();
   if (!dest) notFound();
 
   const { data: sl } = await supabase.from("sub_locations").select("*").eq("destination_id", dest.id).eq("slug", subSlug).single();

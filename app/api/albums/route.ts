@@ -16,7 +16,6 @@ export async function GET() {
       created_at,
       images ( count )
     `)
-    .eq("is_public", true)
     .order("created_at", { ascending: false });
 
   if (error) {

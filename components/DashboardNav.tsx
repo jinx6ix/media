@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import clsx from "clsx";
 
-interface NavAlbum { id: string; name: string; slug: string; is_public: boolean; }
+interface NavAlbum { id: string; name: string; slug: string; }
 interface Props { user: User; albums: NavAlbum[]; destinations?: { id: string; name: string; slug: string }[]; }
 
 export default function DashboardNav({ user, albums, destinations }: Props) {
@@ -67,11 +67,6 @@ export default function DashboardNav({ user, albums, destinations }: Props) {
                 <NavLink key={a.id} href={`/dashboard/albums/${a.slug}`}
                   active={pathname === `/dashboard/albums/${a.slug}`} icon="▫">
                   <span className="truncate flex-1">{a.name}</span>
-                  {a.is_public && (
-                    <span className="text-[9px] bg-[#c9a84c20] text-[#c9a84c] border border-[#c9a84c40] rounded px-1 py-0.5 ml-1 flex-shrink-0">
-                      PUB
-                    </span>
-                  )}
                 </NavLink>
               ))}
             </div>

@@ -6,7 +6,6 @@ export async function GET() {
   const { data, error } = await supabase
     .from("destinations")
     .select("id, name, slug, country, description, cover_url, share_token, created_at, sub_locations(count)")
-    .eq("is_public", true)
     .order("name");
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });

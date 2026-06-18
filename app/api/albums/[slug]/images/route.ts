@@ -12,16 +12,12 @@ export async function GET(req: NextRequest, { params }: Props) {
 
   const { data: album, error: albumErr } = await supabase
     .from("albums")
-    .select("id, name, slug, description, cover_url, is_public")
+    .select("id, name, slug, description, cover_url")
     .eq("slug", slug)
     .single();
 
   if (albumErr || !album) {
     return NextResponse.json({ error: "Album not found" }, { status: 404 });
-  }
-
-  if (!album.is_public) {
-    return NextResponse.json({ error: "Album is not public" }, { status: 403 });
   }
 
   const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "50");
