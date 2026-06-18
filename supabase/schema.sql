@@ -24,7 +24,7 @@ create table if not exists albums (
 -- ─────────────────────────────────────────────
 -- MEDIA TABLE
 -- Drop old "images" table (or view) first, then create media
--- ─────────────────────────────────────────────
+-- ─────────────────────────────────────────────-----
 
 -- Drop old images table if it exists as a real table
 drop table if exists images cascade;
